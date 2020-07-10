@@ -48,6 +48,16 @@ unsafe fn _bswap64(x: i64) -> i64 {
     (((_bswap(x as i32) as u64) << 32) | ((_bswap((x >> 32) as i32) as u64) & 0xFFFFFFFF)) as i64
 }
 
+#[cfg(target_arch = "wasm32")]
+fn _bswap(x: i32) -> i32 {
+    x.swap_bytes()
+}
+
+#[cfg(target_arch = "wasm32")]
+fn _bswap64(x: i64) -> i64 {
+    x.swap_bytes()
+}
+
 const FORWARD_WEIGHTS: [[i32; 9]; Colorimetry::Length as usize] = [
     [
         XR_601, XG_601, XB_601, YR_601, YG_601, YB_601, ZR_601, ZG_601, ZB_601,
